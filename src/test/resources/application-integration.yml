@@ -1,0 +1,5 @@
+spring:
+  r2dbc:
+    url: r2dbc:tc:postgresql:///polardb_order?TC_IMAGE_TAG=14.4
+  liquibase:
+    enabled: false

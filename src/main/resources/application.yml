@@ -1,0 +1,28 @@
+server:
+  port: 9002
+  shutdown: graceful
+  netty:
+    connection-timeout: 2s
+    idle-timeout: 15s
+
+spring:
+  application:
+    name: order-service
+  lifecycle:
+    timeout-per-shutdown-phase: 15s
+  r2dbc:
+    username: user
+    password: password
+    url: r2dbc:postgresql://localhost:5432/polardb_order
+    pool:
+      max-create-connection-time: 2s
+      initial-size: 5
+      max-size: 10
+  liquibase:
+    url: jdb c:postgresql://localhost:5432/polardb_order
+    user: user
+    password: password
+    change-log: classpath:/db/changelog/db.changelog-master.yaml
+
+polar:
+  catalog-service-uri: "http://localhost:9001"
