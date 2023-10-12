@@ -10,6 +10,27 @@ spring:
     name: order-service
   lifecycle:
     timeout-per-shutdown-phase: 15s
+  cloud:
+    function:
+      definition: dispatchOrder
+    stream:
+      bindings:
+        dispatchOrder-in-0:
+          destination: order-dispatched
+          group: {spring.application.name}
+        acceptOrder-out-0:
+          destination: order-accepted
+      rabbit:
+        bindings:
+          acceptOrder-out-0:
+            producer:
+              transacted: true
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: user
+    password: password
+    connection-timeout: 5s
   r2dbc:
     username: user
     password: password
@@ -19,7 +40,7 @@ spring:
       initial-size: 5
       max-size: 10
   liquibase:
-    url: jdb c:postgresql://localhost:5432/polardb_order
+    url: jdbc:postgresql://localhost:5432/polardb_order
     user: user
     password: password
     change-log: classpath:/db/changelog/db.changelog-master.yaml
